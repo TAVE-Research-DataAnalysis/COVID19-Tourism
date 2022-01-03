@@ -55,12 +55,12 @@ View(nouns_ls)
 ## Step3. 데이터 프레임 생성
 
 # 명사 list를 문자열 vector로 변환
-contents_jan20 <- table(unlist(nouns_jan20))
-class(contents_jan20) # table
+contents_ls <- table(unlist(nouns_ls))
+class(contents_ls) # table
 # 데이터프레임 변환
-df_jan20 <- as.data.frame(contents_jan20, stringAsFactors=F)
+result_df <- as.data.frame(contents_ls, stringAsFactors=F)
 # 변수명 수정
-df_jan20 <- rename(df_jan20,
+result_df <- rename(result_df,
                    word = Var1,
                    freq = Freq)
 
@@ -68,31 +68,30 @@ df_jan20 <- rename(df_jan20,
 ## Step4. 필터링 및 빈도표 출력
 
 # 두글자 이상의 단어만 추출
-df_jan20 <- filter(df_jan20, str_length(word) >= 2)
+result_df <- filter(df_jan20, str_length(word) >= 2)
 
-head(df_jan20)
-View(df_jan20)
-class(df_jan20) # data.frame
-dim(df_jan20)
-summary(df_jan20)
+head(result_df)
+View(result_df)
+class(result_df) # data.frame
+dim(result_df)
+summary(result_df)
 # 빈도수 상위 20개 단어 추출 (내림차순 정렬)
-top_20 <- df_jan20 %>% 
+top_20 <- result_df %>% 
   arrange(desc(freq)) %>% 
   head(20)
 
 # stopwords 설정 (보완필요)
 stop_words <- c("^", "♡", "'", "☆", "2020", "@", "-", "_", "~", "♥", ";")
-df_jan20 <- df_jan20[str_detect(df_jan20, stop_words) == FALSE,]
+result_df <- result_df[str_detect(result_df, stop_words) == FALSE,]
 # 특수문자 제거 (보완 필요)
 top_20 <- top_20[which(!top_20$word %in% c("ㅋ", "^", "[~!@#$%^&*()_+=?]<>'")),]
 
 
 View(top_20)
 # 빈도수 상위 500개 단어 추출 (내림차순 정렬)
-top_500 <- df_jan20 %>% 
+top_500 <- result_df %>% 
   arrange(desc(freq)) %>% 
   head(500)
-str(top_500)
 
 ### 시각화
 # 바차트
